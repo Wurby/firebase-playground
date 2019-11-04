@@ -4,7 +4,16 @@
 </h1>
 
 <ul *ngIf="customers">
-  <li *ngFor="let customer of customers | async"></li>
+  <li *ngFor="let customer of customers | async">
+    {{ customer.id }}, {{ customer.name }}, {{ customer.location }}, Account
+    balance: $ {{ customer.balance }}
+  </li>
 </ul>
 
-<button (click)="getCustomers()">Update?</button>
+<form [formGroup]="form">
+  Name: <br /><input formControlName="name" /> <br />
+  Location: <br /><input formControlName="location" />
+  <button (click)="createCustomer()">Create Customer</button>
+  <button (click)="modifyCustomer()">Modify Customer</button>
+  <button (click)="deleteCustomer()">Delete Customer</button>
+</form>

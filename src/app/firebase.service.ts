@@ -1,18 +1,37 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, of } from 'rxjs';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection
+} from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
-  customers: Observable<any[]>;
+  private customerCollection: AngularFirestoreCollection;
+  customers$: Observable<any[]>;
 
   constructor(db: AngularFirestore) {
-    this.customers = db.collection('customers').valueChanges();
+    this.customerCollection = db.collection('customers');
+    this.customers$ = this.customerCollection.valueChanges();
   }
 
-  getCustomers() {
-    return this.customers;
+  editCustomer() {}
+
+  addCustomer(customer) {
+    this.customerCollection.doc(`${customer.id}`).set(customer);
+  }
+
+  deleteCustomer(customer) {
+    this.customerCollection.doc(`${customer.id}`).delete();
+  }
+
+  getCustomers$() {
+    return this.customers$;
+  }
+
+  getCustomersState() {
+    return this.customers$;
   }
 }
