@@ -1,3 +1,4 @@
+import { shareReplay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
@@ -12,9 +13,11 @@ export class FirebaseService {
   private customerCollection: AngularFirestoreCollection;
   customers$: Observable<any[]>;
 
-  constructor(db: AngularFirestore) {
+  constructor(private db: AngularFirestore) {
     this.customerCollection = db.collection('customers');
-    this.customers$ = this.customerCollection.valueChanges();
+    this.customers$ = this.customerCollection
+      .valueChanges()
+      .pipe(shareReplay());
   }
 
   editCustomer() {}

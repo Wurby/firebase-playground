@@ -43,15 +43,16 @@ export class AppComponent {
   modifyCustomer() {}
 
   deleteCustomer() {
-    return this.fbs.getCustomers$().subscribe(value => {
-      value.map(el => {
-        console.log('map: ' + JSON.stringify(el));
-        if (el.name == this.form.value.name) {
-          const customer = el;
-          console.log('customer' + JSON.stringify(customer));
-          this.fbs.deleteCustomer(customer);
-        }
-      });
-    });
+    return this.fbs
+      .getCustomers$()
+      .subscribe(value => {
+        value.map(el => {
+          if (el.name == this.form.value.name) {
+            const customer = el;
+            this.fbs.deleteCustomer(customer);
+          }
+        });
+      })
+      .unsubscribe();
   }
 }
